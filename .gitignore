@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/DesktopApp/CurveFittingDll/.vs/CurveFittingDll
+/DesktopApp/CurveFittingDll/CurveFittingDll/Debug/CurveFittingDll.tlog
+/DesktopApp/CurveFittingDll/CurveFittingDll/Debug
+/DesktopApp/CurveFittingDll/CurveFittingDll/x64/Debug
+/DesktopApp/CurveFittingDll/x64/Debug
