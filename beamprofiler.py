@@ -1,5 +1,4 @@
 from ast import arg
-from ctypes import Union
 import imp
 from PIL import Image
 import numpy as np
@@ -67,11 +66,16 @@ class BeamProfiler:
         x, y = np.meshgrid(x, y)
 
         return curve_fit(profile.calculate, (x, y), self.image_as_array.ravel(), p0=first_guess)
-    def calculate_beam_parameters(self, first_guess : tuple = None, convert_to_real_size: bool = False):
+    def calculate_beam_parameters(self, first_guess : tuple = None, convert_to_real_size: bool = False, preprocess_image : bool = True):
         """
         Calculates the beam parameters: ellipticity and width at 1/e^2 (2 sigma)
         Returns the ellipticity, sigma_x, sigma_y, popt, and the pcov from the fit.
         """
+        if(preprocess_image):
+            self.smooth()
+            self.scale(4)
+            self.normalize()
+            
         profile = Gaussian2DProfile()
         popt, pcov = self.fit(profile, first_guess= first_guess)
 
