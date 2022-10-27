@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "BeamProfilerSharp (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "BeamProfilerSharp (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

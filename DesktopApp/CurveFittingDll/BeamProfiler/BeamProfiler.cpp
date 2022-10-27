@@ -42,9 +42,15 @@ int main()
         return 1;
     }
     //imshow("Display window", img);
-    
+
+    std::cout << img.depth() << std::endl;
+    Mat gaussian_blured;
+
+    cv::GaussianBlur(img, gaussian_blured, Size(151, 151), 70, 70); // size of the kernel must be positive and odd!!
+
+
     Mat scaled_down;
-    resize(img, scaled_down, Size(), 1.0 / 4.0, 1.0 / 4.0);
+    resize(gaussian_blured, scaled_down, Size(), 1.0 / 4.0, 1.0 / 4.0);
     Mat normalized;
     cv::normalize(scaled_down, normalized, 0.0, 1.0, cv::NORM_MINMAX);
 
@@ -74,9 +80,15 @@ int main()
     std::cout << "Loading the image into residuals.";
     int k = waitKey(0);
 
+    
+
     Eigen::MatrixXd expected;
 
+
+
     cv::cv2eigen(scaled_down, expected);
+
+    // imshow("blured", scaled_down);
 
     expected = (1.0/expected.maxCoeff()) * expected;
 
@@ -84,7 +96,7 @@ int main()
 
 
     std::cout << "Shape of expected profile: " << expected.rows() << " rows by " << expected.cols() << std::endl;
-    std::cout << "Shape of scaled_down profile: " << scaled_down.rows << " rows by " << scaled_down.cols << std::endl;
+    std::cout << "Shape of blured profile: " << scaled_down.rows << " rows by " << scaled_down.cols << std::endl;
 
     for (int i = 0; i < expected.rows(); i++) {
         for (int j = 0; j < expected.cols(); j++) {

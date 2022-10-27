@@ -1,0 +1,185 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved. -->
+<!-- Licensed under the MIT License. See LICENSE in the project root for license information. -->
+
+<Page
+    x:Class="BeamProfilerSharp.Pages.AnalysisPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BeamProfilerSharp.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:BeamProfilerSharp.ViewModels"
+    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
+    mc:Ignorable="d"
+    Padding="10"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.DataContext>
+        <vm:AnalysisViewModel />
+    </Page.DataContext>
+    <Page.Resources>
+        <converters:StringVisibilityConverter x:Key="StringVisibilityConverter" EmptyValue="Visible" NotEmptyValue="Collapsed"/>
+        <converters:StringVisibilityConverter x:Key="StringVisibilityConverterNegated" EmptyValue="Collapsed" NotEmptyValue="Visible"/>
+    </Page.Resources>
+
+    <StackPanel Padding="10">
+
+
+        <Button Command="{Binding OpenFileCommand}">
+            <Button.Content>
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xE8E5;" Margin="0,0,3,0" />
+                    <TextBlock>Open image</TextBlock>
+                </StackPanel>
+            </Button.Content>
+            <Button.KeyboardAccelerators>
+                <KeyboardAccelerator Key="O" Modifiers="Control" IsEnabled="True" />
+            </Button.KeyboardAccelerators>
+        </Button>
+
+        <ContentPresenter CornerRadius="8"
+                          Margin="0,12,12,12"
+                          Padding="16"
+                          Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+            <StackPanel>
+                <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
+                           Margin="0,0,0,5">
+                    Fit Parameters
+                </TextBlock>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Margin="0,5,5,5">
+                        <NumberBox Value="{Binding FitInformation.X_0}" >
+                            <NumberBox.Header>
+                                <TextBlock FontFamily="Noto Sans Math" Margin="0,0,0,-5">
+                            X<Run Typography.Variants="Subscript">0</Run>
+                                </TextBlock>
+                            </NumberBox.Header>
+                        </NumberBox>
+                        <NumberBox Value="{Binding FitInformation.Y_0}" Margin="0,5,0,0">
+                            <NumberBox.Header>
+                                <TextBlock FontFamily="Noto Sans Math" Margin="0,0,0,-5">
+                                    Y&#x2080;
+                                </TextBlock>
+                            </NumberBox.Header>
+                        </NumberBox>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="0,5,5,5">
+                        <NumberBox Value="{Binding FitInformation.SigmaX}">
+                            <NumberBox.Header>
+                                <TextBlock FontFamily="Noto Sans Math" Margin="0,0,0,-5">
+                                    &#x03C3;&#x2093;
+                                </TextBlock>
+                            </NumberBox.Header>
+                        </NumberBox>
+
+                        <NumberBox Value="{Binding FitInformation.SigmaY}" Margin="0,5,0,0">
+                            <NumberBox.Header>
+                                <TextBlock FontFamily="Noto Sans Math" Margin="0,0,0,-5">
+                                    <Span FontFamily="Noto Sans Math">
+                                        &#x03C3;
+                                        <Run KeyTipVerticalOffset="-2" KeyTipHorizontalOffset="-2" FontSize="8" Typography.Variants="Subscript">y</Run>
+                                    </Span>
+                                </TextBlock>
+                            </NumberBox.Header>
+                        </NumberBox>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Margin="0,5,0,5">
+                        <NumberBox Value="{Binding FitInformation.Theta}">
+                            <NumberBox.Header>
+                                <TextBlock FontFamily="Noto Sans Math" Margin="0,0,0,-5">
+                                    &#x03B8;
+                                </TextBlock>
+                            </NumberBox.Header>
+                        </NumberBox>
+                    </StackPanel>
+                </Grid>
+                <Grid Margin="0,10,0,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
+                               Grid.ColumnSpan="2"
+                               Grid.Row="0"
+                               Text="Image Processing Options"
+                               Margin="0,0,0,5"/>
+                    <StackPanel Grid.Column="0"
+                                Grid.Row="1"
+                                Margin="0,0,5,0">
+                        <CheckBox Content="Smooth Image" />
+                        <NumberBox Header="Smoothing Kernel Size" />
+                        <NumberBox Header="Smoothing Kernel Sigma" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1"
+                                Grid.Row="1"
+                                Margin="5,0,5,0">
+                        <CheckBox Content="Resize Image (faster fits)" />
+                        <NumberBox Header="Resizing Factor (x0.25 default)"/>
+                    </StackPanel>
+                </Grid>
+                
+
+
+                <Button 
+                        Command="{Binding RunFitCommand}"
+                        Margin="{ThemeResource AppBarButtonInnerBorderMargin}">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <SymbolIcon Symbol="Send" Margin="0,0,8,0" />
+                            <TextBlock Text="Fit To Image (Ctrl+R)" />
+                        </StackPanel>
+                    </Button.Content>
+                    <Button.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="R" Modifiers="Control" />
+                    </Button.KeyboardAccelerators>
+                </Button>
+
+
+            </StackPanel>
+        </ContentPresenter>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <ContentPresenter Grid.Column="0"
+                          CornerRadius="8"
+                          Margin="0,12,12,12"
+                          Padding="16"
+                          Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+
+                <StackPanel>
+                    <TextBlock Text="Source Image" 
+                               Style="{ThemeResource SubtitleTextBlockStyle}" 
+                               Margin="0,0,0,5"/>
+                    <TextBlock Text="No image has been opened yet." Visibility="{Binding ImageSource, Converter={StaticResource StringVisibilityConverter}}" />
+
+                    <Image Source="{Binding ImageSource}"  />
+                </StackPanel>
+            </ContentPresenter>
+            <ContentPresenter CornerRadius="8"
+                              Grid.Column="1"
+                          Margin="0,12,12,12"
+                          Padding="16"
+                          Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+                <StackPanel>
+                    <TextBlock Text="Fit result" 
+                               Style="{ThemeResource SubtitleTextBlockStyle}"
+                               Margin="0,0,0,5"/>
+                    <TextBlock Text="No fit has been done yet." Visibility="{Binding FitImageSource, Converter={StaticResource StringVisibilityConverter}}" />
+
+                    <Image Source="{Binding FitImageSource}" />
+                </StackPanel>
+            </ContentPresenter>
+        </Grid>
+
+    </StackPanel>
+</Page>
