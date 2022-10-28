@@ -1,10 +1,13 @@
 // BeamProfiler.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 #define GLOG_NO_ABBREVIATED_SEVERITIES
+#include <Eigen/Dense>
 
 #include <iostream>
 #include <ceres/problem.h>
 #include <Profile.h>
+
+
 
 #include <opencv2/core.hpp>
 #include <opencv2/imgcodecs.hpp>
@@ -13,8 +16,10 @@
 #include <opencv2/core/eigen.hpp>
 #include <Gaussian2DProfileEigen.h>
 
+#include <ImageHandler.h>
 
-#include <Eigen/Dense>
+
+
 
 using namespace cv;
 
@@ -34,25 +39,20 @@ int main()
 
     std::getline(std::cin, filepath);
 
-    Mat img = imread(filepath, IMREAD_GRAYSCALE);
+    ImageHandler imageHandler;
+
+    imageHandler.Process(filepath, SmoothInfo(true, 150, 70), ResizeInfo(true, 0.25));
+
+    Mat img = imageHandler.GetImage();
+    
+   /* Mat img = imread(filepath, IMREAD_GRAYSCALE);
 
     if (img.empty())
     {
         std::cout << "Could not read the image: " << filepath << std::endl;
         return 1;
-    }
+    }*/
     //imshow("Display window", img);
-
-    std::cout << img.depth() << std::endl;
-    Mat gaussian_blured;
-
-    cv::GaussianBlur(img, gaussian_blured, Size(151, 151), 70, 70); // size of the kernel must be positive and odd!!
-
-
-    Mat scaled_down;
-    resize(gaussian_blured, scaled_down, Size(), 1.0 / 4.0, 1.0 / 4.0);
-    Mat normalized;
-    cv::normalize(scaled_down, normalized, 0.0, 1.0, cv::NORM_MINMAX);
 
     // first values:
     double amplitude = 1.0;
@@ -73,9 +73,9 @@ int main()
     
 
     
-    std::cout << "Image has " << normalized.rows << " px by " << normalized.cols << "px\n";
-    imshow("Display window", scaled_down);
-    imwrite("shrinked.bmp", scaled_down);
+    std::cout << "Image has " << img.rows << " px by " << img.cols << "px\n";
+    imshow("Display window - processed", img);
+    
 
     std::cout << "Loading the image into residuals.";
     int k = waitKey(0);
@@ -86,7 +86,7 @@ int main()
 
 
 
-    cv::cv2eigen(scaled_down, expected);
+    cv::cv2eigen(img, expected);
 
     // imshow("blured", scaled_down);
 
@@ -96,7 +96,7 @@ int main()
 
 
     std::cout << "Shape of expected profile: " << expected.rows() << " rows by " << expected.cols() << std::endl;
-    std::cout << "Shape of blured profile: " << scaled_down.rows << " rows by " << scaled_down.cols << std::endl;
+    std::cout << "Shape of blured profile: " << img.rows << " rows by " << img.cols << std::endl;
 
     for (int i = 0; i < expected.rows(); i++) {
         for (int j = 0; j < expected.cols(); j++) {
@@ -126,7 +126,7 @@ int main()
     Point minLoc;
     Point maxLoc;
 
-    minMaxLoc(scaled_down, &minVal, &maxVal, &minLoc, &maxLoc);
+    minMaxLoc(img, &minVal, &maxVal, &minLoc, &maxLoc);
 
     std::cout << "min val: " << minVal << std::endl;
     std::cout << "max val: " << maxVal << std::endl;
@@ -193,7 +193,7 @@ int main()
 
     
 
-    Eigen::MatrixXd values = profile.Calculate(normalized.cols, normalized.rows);
+    Eigen::MatrixXd values = profile.Calculate(img.cols, img.rows);
 
     
     std::cout << "Mean value: " << values.mean() << std::endl;

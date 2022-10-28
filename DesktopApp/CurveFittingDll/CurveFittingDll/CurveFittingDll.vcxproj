@@ -44,7 +44,8 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
-    <VCToolsVersion>14.34.31931</VCToolsVersion>
+    <VCToolsVersion>
+    </VCToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -71,6 +72,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <TargetExt>.dll</TargetExt>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -145,10 +149,12 @@
     <ClInclude Include="BeamProfiler.h" />
     <ClInclude Include="Gaussian2DProfileEigen.h" />
     <ClInclude Include="ImageHandler.h" />
+    <ClInclude Include="ImageInformation.h" />
     <ClInclude Include="Profile.h" />
+    <ClInclude Include="ResizeInfo.h" />
+    <ClInclude Include="SmoothInfo.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BeamProfiler.cpp" />
     <ClCompile Include="Gaussian2DProfileEigen.cpp" />
     <ClCompile Include="ImageHandler.cpp" />
     <ClCompile Include="Profile.cpp" />
