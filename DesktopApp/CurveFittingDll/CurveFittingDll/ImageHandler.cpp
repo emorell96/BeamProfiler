@@ -1,16 +1,5 @@
-#include <Eigen/Dense>
-
 #include "ImageHandler.h"
-#include "ResizeInfo.h"
-#include "SmoothInfo.h"
 
-
-#include <iostream>
-#include <opencv2/core.hpp>
-#include <opencv2/imgcodecs.hpp>
-#include <opencv2/highgui.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/core/eigen.hpp>
 
 
 

@@ -27,6 +27,9 @@
     <ClCompile Include="..\CurveFittingDll\Profile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\CurveFittingDll\BeamProfiler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\CurveFittingDll\BeamProfiler.h">

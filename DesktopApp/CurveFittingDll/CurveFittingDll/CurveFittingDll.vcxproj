@@ -147,6 +147,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BeamProfiler.h" />
+    <ClInclude Include="FitParameters.h" />
     <ClInclude Include="Gaussian2DProfileEigen.h" />
     <ClInclude Include="ImageHandler.h" />
     <ClInclude Include="ImageInformation.h" />
@@ -155,6 +156,7 @@
     <ClInclude Include="SmoothInfo.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BeamProfiler.cpp" />
     <ClCompile Include="Gaussian2DProfileEigen.cpp" />
     <ClCompile Include="ImageHandler.cpp" />
     <ClCompile Include="Profile.cpp" />

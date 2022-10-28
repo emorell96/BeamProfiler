@@ -17,6 +17,8 @@
 #include <Gaussian2DProfileEigen.h>
 
 #include <ImageHandler.h>
+#include <FitParameters.h>
+#include <BeamProfiler.h>
 
 
 
@@ -55,20 +57,19 @@ int main()
     //imshow("Display window", img);
 
     // first values:
-    double amplitude = 1.0;
-    double sigma_x = 80;
+    // amplitude = 1.0;
+    Parameter sigma_x(false, false, 80.0, 30.0, 500.0);
 
-    double sigma_y = 50;
+    Parameter sigma_y(false, false, 50.0, 30.0, 500.0);
 
-    double x_0 = 300;
+    Parameter x_0(false, false, 300.0, 0.0, 600);
+
+    Parameter y_0(false, false, 100.0, 0.0, 600);
     
 
+    Parameter theta(false, false, 0.0);
 
-    double y_0 = 100;
-    
-
-    double theta = 0;
-    double offset = 0;
+    FitParameters fitParameters(x_0, y_0, sigma_x, sigma_y, theta);
 
     
 
@@ -80,156 +81,159 @@ int main()
     std::cout << "Loading the image into residuals.";
     int k = waitKey(0);
 
-    
+    BeamProfiler profiler(imageHandler, fitParameters);
 
-    Eigen::MatrixXd expected;
+    profiler.Fit();
 
-
-
-    cv::cv2eigen(img, expected);
-
-    // imshow("blured", scaled_down);
-
-    expected = (1.0/expected.maxCoeff()) * expected;
-
-    std::cout << "mean " << expected.mean() << std::endl;
+    //Eigen::MatrixXd expected;
 
 
-    std::cout << "Shape of expected profile: " << expected.rows() << " rows by " << expected.cols() << std::endl;
-    std::cout << "Shape of blured profile: " << img.rows << " rows by " << img.cols << std::endl;
 
-    for (int i = 0; i < expected.rows(); i++) {
-        for (int j = 0; j < expected.cols(); j++) {
-            CostFunction* cost_function =
-                new AutoDiffCostFunction<FastGaussian2DResidual, 1, 1, 1, 1, 1, 1>(
-                    new FastGaussian2DResidual(double(j), double(i), expected(i, j)));
+    //cv::cv2eigen(img, expected);
 
-            /*CostFunction* cost_function =
-                new ceres::NumericDiffCostFunction<Gaussian2DResidual, ceres::CENTRAL, 1, 1, 1, 1, 1, 1>(
-                    new Gaussian2DResidual(double(j), double(i), expected(i, j)));*/
+    //// imshow("blured", scaled_down);
 
-            problem.AddResidualBlock(cost_function,
-                nullptr,
-                //&amplitude,
-                &sigma_x,
-                &sigma_y,
-                &x_0,
-                &y_0,
-                &theta);
+    //expected = (1.0/expected.maxCoeff()) * expected;
 
-               // &offset);
-        }
-    }
+    //std::cout << "mean " << expected.mean() << std::endl;
 
-    double minVal;
-    double maxVal;
-    Point minLoc;
-    Point maxLoc;
 
-    minMaxLoc(img, &minVal, &maxVal, &minLoc, &maxLoc);
+    //std::cout << "Shape of expected profile: " << expected.rows() << " rows by " << expected.cols() << std::endl;
+    //std::cout << "Shape of blured profile: " << img.rows << " rows by " << img.cols << std::endl;
 
-    std::cout << "min val: " << minVal << std::endl;
-    std::cout << "max val: " << maxVal << std::endl;
-    std::cout << "min loc: " << minLoc << std::endl;
-    std::cout << "max loc: " << maxLoc << std::endl;
+    //for (int i = 0; i < expected.rows(); i++) {
+    //    for (int j = 0; j < expected.cols(); j++) {
+    //        CostFunction* cost_function =
+    //            new AutoDiffCostFunction<FastGaussian2DResidual, 1, 1, 1, 1, 1, 1>(
+    //                new FastGaussian2DResidual(double(j), double(i), expected(i, j)));
 
-    std::cout << "finished loading the image\n";
+    //        /*CostFunction* cost_function =
+    //            new ceres::NumericDiffCostFunction<Gaussian2DResidual, ceres::CENTRAL, 1, 1, 1, 1, 1, 1>(
+    //                new Gaussian2DResidual(double(j), double(i), expected(i, j)));*/
 
-    Solver::Options options;
-    options.max_num_iterations = 50;
-    options.num_threads = 8;
+    //        problem.AddResidualBlock(cost_function,
+    //            nullptr,
+    //            //&amplitude,
+    //            &sigma_x,
+    //            &sigma_y,
+    //            &x_0,
+    //            &y_0,
+    //            &theta);
 
-    
-    options.trust_region_strategy_type = ceres::LEVENBERG_MARQUARDT;
-    //options.dogleg_type = ceres::SUBSPACE_DOGLEG;
+    //           // &offset);
+    //    }
+    //}
 
-    // options.min_linear_solver_iterations = 4;
-    //options.initial_trust_region_radius = 1;
-    //options.check_gradients = true;
-    options.use_inner_iterations = false;
-    //options.sparse_linear_algebra_library_type = ceres::EIGEN_;
-    options.linear_solver_type = ceres::ITERATIVE_SCHUR;
-    options.minimizer_progress_to_stdout = false;
-    /*options.function_tolerance = 1e-20;
-    options.parameter_tolerance = 1e-20;*/
-    
-    Solver::Summary summary;
+    //double minVal;
+    //double maxVal;
+    //Point minLoc;
+    //Point maxLoc;
 
-    //bounds
+    //minMaxLoc(img, &minVal, &maxVal, &minLoc, &maxLoc);
 
-    /*problem.SetParameterLowerBound(&amplitude, 0, 0.8);
-    problem.SetParameterUpperBound(&amplitude, 0, 1.3);*/
+    //std::cout << "min val: " << minVal << std::endl;
+    //std::cout << "max val: " << maxVal << std::endl;
+    //std::cout << "min loc: " << minLoc << std::endl;
+    //std::cout << "max loc: " << maxLoc << std::endl;
 
-    problem.SetParameterLowerBound(&sigma_x, 0, 30);
-    problem.SetParameterLowerBound(&sigma_y, 0, 30);
+    //std::cout << "finished loading the image\n";
 
-    problem.SetParameterUpperBound(&sigma_x, 0, 500);
-    problem.SetParameterUpperBound(&sigma_y, 0, 500);
+    //Solver::Options options;
+    //options.max_num_iterations = 50;
+    //options.num_threads = 8;
 
-    problem.SetParameterLowerBound(&x_0, 0, 0.0);
-    problem.SetParameterLowerBound(&y_0, 0, 0.0);
+    //
+    //options.trust_region_strategy_type = ceres::LEVENBERG_MARQUARDT;
+    ////options.dogleg_type = ceres::SUBSPACE_DOGLEG;
 
-    problem.SetParameterUpperBound(&x_0, 0, expected.rows());
-    problem.SetParameterUpperBound(&y_0, 0, expected.cols());
+    //// options.min_linear_solver_iterations = 4;
+    ////options.initial_trust_region_radius = 1;
+    ////options.check_gradients = true;
+    //options.use_inner_iterations = false;
+    ////options.sparse_linear_algebra_library_type = ceres::EIGEN_;
+    //options.linear_solver_type = ceres::ITERATIVE_SCHUR;
+    //options.minimizer_progress_to_stdout = false;
+    ///*options.function_tolerance = 1e-20;
+    //options.parameter_tolerance = 1e-20;*/
+    //
+    //Solver::Summary summary;
 
-    /*problem.SetParameterLowerBound(&offset, 0, 0.0);
-    problem.SetParameterUpperBound(&offset, 0, 0.01);*/
+    ////bounds
 
-    Solve(options, &problem, &summary);
-    std::cout << summary.FullReport() << "\n";
+    ///*problem.SetParameterLowerBound(&amplitude, 0, 0.8);
+    //problem.SetParameterUpperBound(&amplitude, 0, 1.3);*/
+
+    //problem.SetParameterLowerBound(&sigma_x, 0, 30);
+    //problem.SetParameterLowerBound(&sigma_y, 0, 30);
+
+    //problem.SetParameterUpperBound(&sigma_x, 0, 500);
+    //problem.SetParameterUpperBound(&sigma_y, 0, 500);
+
+    //problem.SetParameterLowerBound(&x_0, 0, 0.0);
+    //problem.SetParameterLowerBound(&y_0, 0, 0.0);
+
+    //problem.SetParameterUpperBound(&x_0, 0, expected.rows());
+    //problem.SetParameterUpperBound(&y_0, 0, expected.cols());
+
+    ///*problem.SetParameterLowerBound(&offset, 0, 0.0);
+    //problem.SetParameterUpperBound(&offset, 0, 0.01);*/
+
+    //Solve(options, &problem, &summary);
+
+    fitParameters = profiler.GetParameters();
+
+    std::cout << profiler.GetSummary().FullReport() << "\n";
     std::cout << "Initial sigma_x: " << 80.0 << " sigma_y: " << 50.0 << "\n";
-    std::cout << "Final   sigma_x: " << sigma_x << " sigma_y: " << sigma_y << "\n";
-    std::cout << "Final   x_0: " << x_0 << " y_0: " << y_0 << "\n";
-    std::cout << "Final   amplitude: " << amplitude << " theta: " << theta << "\n";
-    std::cout << "Final   offset: " << offset << "\n";
+    std::cout << "Final   sigma_x: " << fitParameters.sigmaX.value << " sigma_y: " << fitParameters.sigmaY.value << "\n";
+    std::cout << "Final   x_0: " << fitParameters.x0.value << " y_0: " << fitParameters.y0.value << "\n";
+    std::cout << "Final   amplitude: " << 1 << " theta: " << fitParameters.theta.value << "\n";
+    std::cout << "Final   offset: " << 0 << "\n";
 
-    std::cout << "Parameters in Python format: (" << amplitude << ", " << x_0 << ", " << y_0 << ", " << sigma_x << ", " << sigma_y << ", " << theta << ", " << offset << ")" << std::endl;
+    std::cout << "Parameters in Python format: (" << 1 << ", " << fitParameters.x0.value << ", " << fitParameters.y0.value << ", " << fitParameters.sigmaX.value << ", " << fitParameters.sigmaY.value << ", " << fitParameters.theta.value << ", " << 0 << ")" << std::endl;
 
     // calculate r^2
 
-    Gaussian2DProfileEigen profile(amplitude, x_0, y_0, sigma_x, sigma_y, theta, offset);
+    Gaussian2DProfileEigen profile(1.0, fitParameters.x0.value, fitParameters.y0.value, fitParameters.sigmaX.value, fitParameters.sigmaY.value, fitParameters.theta.value, 0);
      
     
 
     
 
     Eigen::MatrixXd values = profile.Calculate(img.cols, img.rows);
-
-    
-    std::cout << "Mean value: " << values.mean() << std::endl;
-    
-    std::cout << "Max value expected: " << expected.maxCoeff() << std::endl;
  
     
 
     Mat calculatedImage;
-    Mat originalImage;
+    //Mat originalImage;
 
     double maxValue = values.maxCoeff();
 
     std::cout << "Max calue: " << maxValue << std::endl;
 
     values = (values / maxValue);
+#pragma region R^2 calculation
+
 
     cv::eigen2cv(values, calculatedImage);
-    cv::eigen2cv(expected, originalImage);
+    //cv::eigen2cv(img, originalImage);
 
     imshow("fitted", calculatedImage);
-    imshow("original", originalImage);
+    imshow("original", img);
 
-    std::cout << "Shape of calculated profile: " << values.rows() << " rows by " << values.cols() << std::endl;
-    
+    //std::cout << "Shape of calculated profile: " << values.rows() << " rows by " << values.cols() << std::endl;
+    //
 
-    auto ss_residuals = Eigen::pow(values.array() - expected.array(), 2.0).sum();
-    auto ss_tot = Eigen::pow(expected.array() - expected.mean(), 2.0).sum();
+    //auto ss_residuals = Eigen::pow(values.array() - expected.array(), 2.0).sum();
+    //auto ss_tot = Eigen::pow(expected.array() - expected.mean(), 2.0).sum();
 
 
-    std::cout << "ss_residual is = " << ss_residuals << std::endl;
-    //std::cout << expected.array() << std::endl;
-    std::cout << "Mean value of expected matrix " << expected.mean() << std::endl;
-    std::cout << "ss_tot is = " << ss_tot << std::endl;
-    
-    std::cout << "R^2 is = " << 1.0 - ss_residuals / ss_tot << std::endl;
+    //std::cout << "ss_residual is = " << ss_residuals << std::endl;
+    ////std::cout << expected.array() << std::endl;
+    //std::cout << "Mean value of expected matrix " << expected.mean() << std::endl;
+    //std::cout << "ss_tot is = " << ss_tot << std::endl;
+    //
+    //std::cout << "R^2 is = " << 1.0 - ss_residuals / ss_tot << std::endl;
+#pragma endregion
 
 
     k = waitKey(0); // Wait for a keystroke in the window

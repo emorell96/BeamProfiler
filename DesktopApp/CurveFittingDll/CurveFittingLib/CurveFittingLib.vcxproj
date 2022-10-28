@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\CurveFittingDll\BeamProfiler.cpp" />
     <ClCompile Include="..\CurveFittingDll\Gaussian2DProfileEigen.cpp" />
     <ClCompile Include="..\CurveFittingDll\ImageHandler.cpp" />
     <ClCompile Include="..\CurveFittingDll\Profile.cpp" />

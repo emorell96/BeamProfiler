@@ -1,10 +1,24 @@
 #pragma once
 
+#include <Eigen/Dense>
 
 #include "ImageInformation.h"
 #include "SmoothInfo.h"
 #include "ResizeInfo.h"
 #include <string>
+
+#include "ResizeInfo.h"
+#include "SmoothInfo.h"
+
+
+#include <iostream>
+
+
+#include <opencv2/core.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/core/eigen.hpp>
 
 class ImageHandler
 {

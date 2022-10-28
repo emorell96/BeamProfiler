@@ -1,10 +1,41 @@
 #pragma once
+
+#define GLOG_NO_ABBREVIATED_SEVERITIES
+#include <ceres/ceres.h>
+
+#include "FitParameters.h"
 #include "ImageHandler.h"
+
+using ceres::Problem;
+using ceres::AutoDiffCostFunction;
+using ceres::CostFunction;
+using ceres::Solver;
+
 class BeamProfiler
 {
 public:
-	BeamProfiler(ImageHandler& handler);
+	BeamProfiler(ImageHandler& handler, FitParameters& initialParameters);
 	void Calibrate(double sensorSizeX, double sensorSizeY);
-	void Fit();
+	int Fit(int max_iterations = 50);
+
+	FitParameters GetParameters() {
+		return fitParameters;
+	}
+
+	Solver::Summary GetSummary() {
+		return summary;
+	}
+
+private:
+	ImageHandler handler;
+	Problem problem;
+	FitParameters fitParameters;
+	Solver::Options options;
+	Solver::Summary summary;
+
+	double sensorSizeX;
+	double sensorSizeY;
+
+	void SetUpProblem(int max_iterations = 50);
 };
 
