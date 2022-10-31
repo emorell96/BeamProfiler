@@ -81,3 +81,8 @@ cv::Mat ImageHandler::GetImage()
 {
 	return imageInformation.GetImage();
 }
+
+ImageInformation ImageHandler::GetImageInformation()
+{
+	return  imageInformation;
+}

@@ -18,10 +18,11 @@
 
 
 #include "FitOptions.h"
+#include "FitResults.h"
 
 //using json;
 
-FitParameters Fit(std::string filepath, SmoothInfo smoothInfo, ResizeInfo resizeInfo, FitParameters fitParameters)
+FitResults Fit(std::string filepath, SmoothInfo smoothInfo, ResizeInfo resizeInfo, FitParameters fitParameters)
 {
 	ImageHandler imageHandler;
 
@@ -31,7 +32,13 @@ FitParameters Fit(std::string filepath, SmoothInfo smoothInfo, ResizeInfo resize
 
 	profiler.Fit();
 
-	return profiler.GetParameters();
+	FitResults fitResults;
+
+	fitResults.imageInformation = imageHandler.GetImageInformation();
+
+	fitResults.finalParameters =  profiler.GetParameters();
+
+	return fitResults;
 }
 
 class HttpParser {

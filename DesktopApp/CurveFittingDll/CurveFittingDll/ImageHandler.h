@@ -34,5 +34,6 @@ public:
 	int Process(std::string imagePath, SmoothInfo smoothInfo, ResizeInfo resizeInfo);
 
 	cv::Mat GetImage();
+	ImageInformation GetImageInformation();
 };
 

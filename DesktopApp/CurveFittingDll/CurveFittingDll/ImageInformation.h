@@ -6,6 +6,8 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/core/eigen.hpp>
 
+#include "json.hpp"
+
 // using namespace cv;
 
 class ImageInformation
@@ -20,7 +22,11 @@ public:
 
 	void SetImage(cv::Mat image) {
 		this->image = image;
+		this->pixelsX = image.rows;
+		this->pixelsY = image.cols;
 	}
+
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(ImageInformation, path, pixelsX, pixelsY)
 private:
 	std::string path;
 
