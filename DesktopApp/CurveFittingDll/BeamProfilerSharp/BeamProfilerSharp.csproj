@@ -47,6 +47,9 @@
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BeamProfilerSharp.Core\BeamProfilerSharp.Core.csproj" />
+  </ItemGroup>
   <!--<ItemGroup>
 	  <ProjectReference Include="..\CurveFittingDll\CurveFittingDll.vcxproj">
 		  <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
