@@ -1,7 +1,19 @@
 #pragma once
 
 #define GLOG_NO_ABBREVIATED_SEVERITIES
+
+#include <Eigen/Dense>
+
+#include <opencv2/core.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
+//#include <opencv2/core/eigen.hpp>
+
+
 #include <ceres/ceres.h>
+#include <ceres/problem.h>
+#include "Profile.h"
 
 #include "FitParameters.h"
 #include "ImageHandler.h"

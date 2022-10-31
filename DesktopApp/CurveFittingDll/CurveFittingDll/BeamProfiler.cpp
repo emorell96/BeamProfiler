@@ -1,18 +1,6 @@
 #include "BeamProfiler.h"
-#include <Eigen/Dense>
 
-#include <opencv2/core.hpp>
-#include <opencv2/imgcodecs.hpp>
-#include <opencv2/highgui.hpp>
-#include <opencv2/imgproc.hpp>
-//#include <opencv2/core/eigen.hpp>
-
-
-#include <ceres/ceres.h>
-#include <ceres/problem.h>
-#include "Profile.h"
-
-using namespace cv;
+//using namespace cv;
 
 using ceres::Problem;
 using ceres::AutoDiffCostFunction;

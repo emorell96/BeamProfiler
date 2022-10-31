@@ -16,6 +16,9 @@
     <Filter Include="Header Files\Models">
       <UniqueIdentifier>{81e3c9f4-bb8d-4fa5-b4f6-5587634e712e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Models\Json">
+      <UniqueIdentifier>{48a061ed-4feb-452d-af8c-7e23de34beb3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ImageHandler.h">
@@ -39,8 +42,29 @@
     <ClInclude Include="ResizeInfo.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
-    <ClInclude Include="FitParameters.h">
+    <ClInclude Include="FitResults.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="server.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="json.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FitParameters.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="FitOptions.h">
+      <Filter>Header Files\Models\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageOptions.h">
+      <Filter>Header Files\Models\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="SmoothOptions.h">
+      <Filter>Header Files\Models\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="ResizeOptions.h">
+      <Filter>Header Files\Models\Json</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

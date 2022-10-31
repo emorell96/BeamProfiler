@@ -1,14 +1,11 @@
 #include "ImageHandler.h"
 
-
-
-
-using namespace cv;
-using cv::Mat;
+//using namespace cv;
+// using cv::Mat;
 
 int ImageHandler::Open(std::string filepath)
 {
-	Mat image = imread(filepath, IMREAD_GRAYSCALE);
+	cv::Mat image = cv::imread(filepath, cv::IMREAD_GRAYSCALE);
 
 	if (image.empty())
 	{
@@ -28,22 +25,22 @@ int ImageHandler::Open(std::string filepath)
 /// <param name="kernelWidth"></param>
 void ImageHandler::Smooth(int kernelSize, int kernelWidth)
 {
-	Mat image = imageInformation.GetImage();
+	cv::Mat image = imageInformation.GetImage();
 
 	// if the kernel size is evdn then increment by one to ensure it's odd.
 	if (kernelSize % 2 == 0) {
 		kernelSize += 1;
 	}
 
-	cv::GaussianBlur(image, image, Size(kernelSize, kernelSize), kernelWidth, kernelWidth);
+	cv::GaussianBlur(image, image, cv::Size(kernelSize, kernelSize), kernelWidth, kernelWidth);
 }
 
 void ImageHandler::Scale(float factor)
 {
-	Mat image = imageInformation.GetImage();
+	cv::Mat image = imageInformation.GetImage();
 
-	Mat scaled;
-	resize(image, scaled, Size(), factor, factor);
+	cv::Mat scaled;
+	resize(image, scaled, cv::Size(), factor, factor);
 
 	imageInformation.SetImage(scaled);
 }
@@ -80,7 +77,7 @@ int ImageHandler::Process(std::string imagePath, SmoothInfo smoothInfo, ResizeIn
 	return 0;
 }
 
-Mat ImageHandler::GetImage()
+cv::Mat ImageHandler::GetImage()
 {
 	return imageInformation.GetImage();
 }

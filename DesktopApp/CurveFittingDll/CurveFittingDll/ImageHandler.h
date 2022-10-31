@@ -7,9 +7,6 @@
 #include "ResizeInfo.h"
 #include <string>
 
-#include "ResizeInfo.h"
-#include "SmoothInfo.h"
-
 
 #include <iostream>
 
@@ -36,6 +33,6 @@ public:
 
 	int Process(std::string imagePath, SmoothInfo smoothInfo, ResizeInfo resizeInfo);
 
-	Mat GetImage();
+	cv::Mat GetImage();
 };
 

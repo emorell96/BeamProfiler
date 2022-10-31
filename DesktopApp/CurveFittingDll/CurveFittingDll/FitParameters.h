@@ -1,41 +1,46 @@
 #pragma once
 
+#include "json.hpp"
+
+using nlohmann::json;
+
 class Parameter {
 public:
     double value = 0;
 
-    Parameter() : withLowerBound(false), withUpperBound(false) {}
+    Parameter() : hasLowerBound(false), hasUpperBound(false) {}
 
-    Parameter(bool withLowerBound, bool withUpperBound, double value = 0, double lowerBound = 0, double upperBound = 0) :
-        withLowerBound(withLowerBound),
-        withUpperBound(withUpperBound),
-        minValue(lowerBound),
-        maxValue(upperBound),
+    Parameter(bool hasLowerBound, bool hasUpperBound, double value = 0, double lowerBound = 0, double upperBound = 0) :
+        hasLowerBound(hasLowerBound),
+        hasUpperBound(hasUpperBound),
+        lowerBound(lowerBound),
+        upperBound(upperBound),
         value(value)
         {};
 
     bool HasLowerBound() {
-        return withLowerBound;
+        return hasLowerBound;
     }
 
     bool HasUpperBound() {
-        return withUpperBound;
+        return hasUpperBound;
     }
 
     double GetUpperBound() {
-        return maxValue;
+        return upperBound;
     }
 
     double GetLowerBound() {
-        return minValue;
+        return lowerBound;
     }
 
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Parameter, hasLowerBound, lowerBound, hasUpperBound, upperBound, value)
 private:
-    bool withLowerBound = false;
-    double minValue = 0;
+    bool hasLowerBound = false;
+    double lowerBound = 0;
 
-    bool withUpperBound = false;
-    double maxValue = 0;
+    bool hasUpperBound = false;
+    double upperBound = 0;
 };
 
 
@@ -60,5 +65,14 @@ public:
     Parameter y0;
 
     Parameter theta;
+
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE(FitParameters, sigmaX, sigmaY, x0, y0, theta)
 };
 
+//void from_json(const json& j, FitParameters& p) {
+//    j.at("x0").get_to(p.x0);
+//    j.at("y0").get_to(p.y0);
+//    j.at("sigmaX").get_to(p.sigmaX);
+//    j.at("sigmaY").get_to(p.sigmaY);
+//    j.at("theta").get_to(p.theta);
+//}

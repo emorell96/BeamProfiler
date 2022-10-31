@@ -95,11 +95,12 @@
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;CURVEFITTINGDLL_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -136,6 +137,8 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -147,13 +150,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BeamProfiler.h" />
+    <ClInclude Include="FitOptions.h" />
     <ClInclude Include="FitParameters.h" />
+    <ClInclude Include="FitResults.h" />
     <ClInclude Include="Gaussian2DProfileEigen.h" />
     <ClInclude Include="ImageHandler.h" />
     <ClInclude Include="ImageInformation.h" />
+    <ClInclude Include="ImageOptions.h" />
+    <ClInclude Include="json.hpp" />
+    <ClInclude Include="server.h" />
     <ClInclude Include="Profile.h" />
     <ClInclude Include="ResizeInfo.h" />
+    <ClInclude Include="ResizeOptions.h" />
     <ClInclude Include="SmoothInfo.h" />
+    <ClInclude Include="SmoothOptions.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BeamProfiler.cpp" />
