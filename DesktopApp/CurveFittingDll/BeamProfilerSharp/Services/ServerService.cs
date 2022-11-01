@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BeamProfilerSharp.Services;
@@ -39,17 +40,37 @@ public class ServerService : IServerService
             Port += 1;
         }
         
-        _startTask = Task.Run(() => RunServer(Port));
+        _startTask = Task.Run(() => {
+            try
+            {
+                return RunServer(Port);
+            }
+            catch
+            {
+                return 1;
+            }
+            
+            }
+        );
     }
 
     public async Task StopServerAsync()
     {
+        var cancellationTokenSource = new CancellationTokenSource();
+        cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(120));
         var requestMessage = 
             new HttpRequestMessage(HttpMethod.Get, string.Format(_baseUrl, Port, "close"));
-        
-        await _httpClient.SendAsync(requestMessage).ConfigureAwait(false);
+        try
+        {
+            await _httpClient.SendAsync(requestMessage, cancellationTokenSource.Token).ConfigureAwait(false);
 
-        await (_startTask ?? Task.CompletedTask).ConfigureAwait(false);
+            await (_startTask ?? Task.CompletedTask).ConfigureAwait(false);
+        }
+        catch
+        {
+            return;
+        }
+        
     }
 
     [DllImport("CurveFittingDll.dll", EntryPoint = "runServer")]

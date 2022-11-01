@@ -18,7 +18,7 @@ private:
 void from_json(const json& j, FitOptions& p) {
 	j.at("filePath").get_to(p.filePath);
 	p.fitParameters = j.at("fitParameters").get<FitParameters>();
-	
+	p.imageOptions = j.at("imageOptions").get<ImageOptions>();
 };
 
 void to_json(json& j, const FitOptions& p) {

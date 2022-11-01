@@ -27,7 +27,7 @@ internal class ResizeOptions : ObservableObject
         return new Core.Models.ResizeOptions()
         {
             Resize = resize,
-            Factor = scaleFactor
+            ResizeFactor = scaleFactor
         };
     }
 }

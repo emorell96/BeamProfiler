@@ -31,7 +31,7 @@ public class ResizeOptions
     {
         get; set;
     }
-    public double Factor
+    public double ResizeFactor
     {
         get; set;
     }

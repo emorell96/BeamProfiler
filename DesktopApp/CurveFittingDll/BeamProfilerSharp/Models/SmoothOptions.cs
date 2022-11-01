@@ -10,7 +10,7 @@ internal class SmoothOptions : ObservableObject
 {
     private bool smooth = true;
     private int kernelSize = 151;
-    private int kernelSigma;
+    private int kernelSigma = 20;
 
     public bool Smooth
     {
