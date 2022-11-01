@@ -10,8 +10,11 @@ using System.Net;
 using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
 using BeamProfilerSharp.Core.Services;
+using BeamProfilerSharp.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.UI;
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -24,6 +27,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using WinRT.Interop;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -60,7 +64,28 @@ public partial class App : Application
         
         m_window.Activate();
 
+        var serverService = Services.GetRequiredService<IServerService>();
+        serverService.StartServer();
+
+        m_window.Closed += M_window_Closed;
+
         //host.Run();
+    }
+
+    private void M_window_Closed(object sender, WindowEventArgs args)
+    {
+        if(m_window is not null)
+        {
+            m_window.Closed -= M_window_Closed;
+        }
+        // hide the window while we close the background resources (this will just hide the window to the user, making it seem that it closes a lot faster).
+        var currentWindow = GetAppWindowForCurrentWindow();
+        currentWindow.Hide();
+
+
+        var serverService = Services.GetRequiredService<IServerService>();
+        serverService.StopServerAsync().Wait();
+
     }
 
     private void ConfigureServices(HostBuilderContext context, IServiceCollection services)
@@ -74,9 +99,18 @@ public partial class App : Application
                     //Proxy = new WebProxy("http://localhost:5555", false)
                 };
             });
-            
+
+        services.AddSingleton<IServerService, ServerService>();  
 
     }
+
+    private AppWindow GetAppWindowForCurrentWindow()
+    {
+        IntPtr hWnd = WindowNative.GetWindowHandle(m_window);
+        WindowId wndId = Win32Interop.GetWindowIdFromWindow(hWnd);
+        return AppWindow.GetFromWindowId(wndId);
+    }
+
 
     private static Window? m_window;
 

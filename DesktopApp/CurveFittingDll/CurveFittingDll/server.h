@@ -121,11 +121,6 @@ public:
 	}
 };
 
-extern "C" __declspec(dllexport) int runServer(int port) {
-	server server;
-	return server.runServer(port);
-}
-
 
 
 

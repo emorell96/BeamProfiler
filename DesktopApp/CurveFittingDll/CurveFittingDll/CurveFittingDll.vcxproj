@@ -167,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BeamProfiler.cpp" />
+    <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Gaussian2DProfileEigen.cpp" />
     <ClCompile Include="ImageHandler.cpp" />
     <ClCompile Include="Profile.cpp" />

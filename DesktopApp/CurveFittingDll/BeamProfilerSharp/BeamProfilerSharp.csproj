@@ -52,13 +52,18 @@
   <ItemGroup>
     <ProjectReference Include="..\BeamProfilerSharp.Core\BeamProfilerSharp.Core.csproj" />
   </ItemGroup>
-  <!--<ItemGroup>
-	  <ProjectReference Include="..\CurveFittingDll\CurveFittingDll.vcxproj">
+	<!--<Target Name="AfterBuild">
+		<Copy SourceFiles="$(ProjectDir)\x64\Release\*.dll" DestinationFolder="$(OutDir)Debug\bin" SkipUnchangedFiles="false" />
+		<Copy SourceFiles="$(ProjectDir)x64\Release\*.dll" DestinationFolder="$(OutDir)Release\bin" SkipUnchangedFiles="false" />
+	</Target>-->
+  <ItemGroup>
+	  <!--<ProjectReference Include="..\CurveFittingDll\CurveFittingDll.vcxproj">
 		  <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+		  
 		  <OutputItemType>Content</OutputItemType>
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </ProjectReference>
-  </ItemGroup>-->
+	  </ProjectReference>-->
+  </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\AnalysisPage.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -78,4 +83,7 @@
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /d /y &quot;$(SolutionDir)x64\Release\*.*&quot; &quot;$(TargetDir)AppX\&quot;" />
+  </Target>
 </Project>

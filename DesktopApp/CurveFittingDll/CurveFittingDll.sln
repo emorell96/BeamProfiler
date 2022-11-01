@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeamProfilerSharp", "BeamPr
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CurveFittingLib", "CurveFittingLib\CurveFittingLib.vcxproj", "{6652694C-CC27-4543-A973-EC11B77757FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeamProfilerSharp.Core", "BeamProfilerSharp.Core\BeamProfilerSharp.Core.csproj", "{B1F4E9E3-D68A-4879-B847-195664C6378A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeamProfilerSharp.Core", "BeamProfilerSharp.Core\BeamProfilerSharp.Core.csproj", "{B1F4E9E3-D68A-4879-B847-195664C6378A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
