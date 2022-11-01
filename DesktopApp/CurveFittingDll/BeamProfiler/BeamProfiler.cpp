@@ -143,10 +143,8 @@ int main()
 //
 //
 //    k = waitKey(0); // Wait for a keystroke in the window
-
-    runServer(9001);
-
-    return 0;
+    server server;
+    return server.runServer(9001);
 
     
     

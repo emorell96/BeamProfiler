@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace BeamProfilerSharp.Core.Models;
 public class ImageOptions
 {
-    public ImageOptions(SmoothOptions smSmoothOptions, ResizeOptions resResizeOptions)
+    public ImageOptions(SmoothOptions SmoothOptions, ResizeOptions resResizeOptions)
     {
-        SmoothOptions = smSmoothOptions ?? throw new ArgumentNullException(nameof(smSmoothOptions));
+        this.SmoothOptions = SmoothOptions ?? throw new ArgumentNullException(nameof(SmoothOptions));
         ResizeOptions = resResizeOptions ?? throw new ArgumentNullException(nameof(resResizeOptions));
     }
 
@@ -31,7 +31,7 @@ public class ResizeOptions
     {
         get; set;
     }
-    public double ResizeFactor
+    public double Factor
     {
         get; set;
     }

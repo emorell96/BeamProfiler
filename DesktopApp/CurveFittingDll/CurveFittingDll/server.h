@@ -82,25 +82,50 @@ void ListenToFit(uWS::HttpResponse<false>* res, uWS::HttpRequest* req, HttpParse
 		});
 }
 
+class server {
+private:
+	int portUsed = 9001;
+	us_listen_socket_t* socket;
 
-
-
-int runServer(int port) {
-	uWS::App()
-		.post("/fit", [](auto* res, auto* req) {
-			HttpParser parser;
-			ListenToFit(res, req, parser);
-		})
-		.listen(port, [&](auto* listenSocket) {
-
-			if (listenSocket) {
-				std::cout << "Listening on port " << port << std::endl;
-			}
-			else {
-				std::cout << "Failed to load certs or to bind to port" << std::endl;
-			}
-
-		})
-		.run();
+	int shutDown() {
+		us_listen_socket_close(0, socket);
 		return 0;
+	}
+public:
+
+	int runServer(int port) {
+		portUsed = port;
+
+		uWS::App()
+			.get("/close", [&](auto* res, auto* req) {
+			res->end("Shutting down!");
+			shutDown();
+		})
+			.post("/fit", [](auto* res, auto* req) {
+			HttpParser parser;
+		ListenToFit(res, req, parser);
+				})
+			.listen(port, [&](auto* listenSocket) {
+					socket = listenSocket;
+					if (listenSocket) {
+						std::cout << "Listening on port " << port << std::endl;
+					}
+					else {
+						std::cout << "Failed to load certs or to bind to port" << std::endl;
+					}
+
+				})
+					.run();
+				std::cout << "Shutting down!" << std::endl;
+				return 0;
+	}
+};
+
+extern "C" __declspec(dllexport) int runServer(int port) {
+	server server;
+	return server.runServer(port);
 }
+
+
+
+

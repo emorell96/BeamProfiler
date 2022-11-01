@@ -12,7 +12,12 @@ public class FitOptions
         get; set;
     }
 
-    public ImageOptions? ImageImageOptions
+    public ImageOptions? ImageOptions
+    {
+        get; set;
+    }
+
+    public string? FilePath
     {
         get; set;
     }

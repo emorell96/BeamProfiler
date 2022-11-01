@@ -14,7 +14,7 @@
     Padding="10"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.DataContext>
-        <vm:AnalysisViewModel />
+        <vm:AnalysisViewModel x:Name="viewModel"/>
     </Page.DataContext>
     <Page.Resources>
         <converters:StringVisibilityConverter x:Key="StringVisibilityConverter" EmptyValue="Visible" NotEmptyValue="Collapsed"/>
@@ -52,14 +52,14 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0" Margin="0,5,5,5">
-                        <NumberBox Value="{Binding FitInformation.X_0}" >
+                        <NumberBox Value="{x:Bind viewModel.FitInformation.X_0, Mode=TwoWay}" >
                             <NumberBox.Header>
                                 <TextBlock FontFamily="Noto Sans Math" Margin="0,0,0,-5">
                             X<Run Typography.Variants="Subscript">0</Run>
                                 </TextBlock>
                             </NumberBox.Header>
                         </NumberBox>
-                        <NumberBox Value="{Binding FitInformation.Y_0}" Margin="0,5,0,0">
+                        <NumberBox Value="{x:Bind viewModel.FitInformation.Y_0, Mode=TwoWay}" Margin="0,5,0,0">
                             <NumberBox.Header>
                                 <TextBlock FontFamily="Noto Sans Math" Margin="0,0,0,-5">
                                     Y&#x2080;
@@ -68,7 +68,7 @@
                         </NumberBox>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="0,5,5,5">
-                        <NumberBox Value="{Binding FitInformation.SigmaX}">
+                        <NumberBox Value="{x:Bind viewModel.FitInformation.SigmaX, Mode=TwoWay}">
                             <NumberBox.Header>
                                 <TextBlock FontFamily="Noto Sans Math" Margin="0,0,0,-5">
                                     &#x03C3;&#x2093;
@@ -76,7 +76,7 @@
                             </NumberBox.Header>
                         </NumberBox>
 
-                        <NumberBox Value="{Binding FitInformation.SigmaY}" Margin="0,5,0,0">
+                        <NumberBox Value="{x:Bind viewModel.FitInformation.SigmaY, Mode=TwoWay}" Margin="0,5,0,0">
                             <NumberBox.Header>
                                 <TextBlock FontFamily="Noto Sans Math" Margin="0,0,0,-5">
                                     <Span FontFamily="Noto Sans Math">
@@ -88,7 +88,7 @@
                         </NumberBox>
                     </StackPanel>
                     <StackPanel Grid.Column="2" Margin="0,5,0,5">
-                        <NumberBox Value="{Binding FitInformation.Theta}">
+                        <NumberBox Value="{x:Bind viewModel.FitInformation.Theta, Mode=TwoWay}">
                             <NumberBox.Header>
                                 <TextBlock FontFamily="Noto Sans Math" Margin="0,0,0,-5">
                                     &#x03B8;
@@ -114,22 +114,24 @@
                     <StackPanel Grid.Column="0"
                                 Grid.Row="1"
                                 Margin="0,0,5,0">
-                        <CheckBox Content="Smooth Image" />
-                        <NumberBox Header="Smoothing Kernel Size" />
-                        <NumberBox Header="Smoothing Kernel Sigma" />
+                        <CheckBox Content="Smooth Image"  IsChecked="{Binding ImageInformation.SmoothOptions.Smooth, Mode=TwoWay}" />
+                        <NumberBox Header="Smoothing Kernel Size" Value="{Binding ImageInformation.SmoothOptions.KernelSize, Mode=TwoWay}" />
+                        <NumberBox Header="Smoothing Kernel Sigma" Value="{Binding ImageInformation.SmoothOptions.KernelSigma, Mode=TwoWay}" />
                     </StackPanel>
                     <StackPanel Grid.Column="1"
                                 Grid.Row="1"
                                 Margin="5,0,5,0">
-                        <CheckBox Content="Resize Image (faster fits)" />
-                        <NumberBox Header="Resizing Factor (x0.25 default)"/>
+                        <CheckBox Content="Resize Image (faster fits)" 
+                                  IsChecked="{Binding ImageInformation.ResizeOptions.Resize, Mode=TwoWay}" />
+                        <NumberBox Header="Resizing Factor (x0.25 default)"
+                                   Value="{Binding ImageInformation.ResizeOptions.ScaleFactor, Mode=TwoWay}"/>
                     </StackPanel>
                 </Grid>
                 
 
 
                 <Button 
-                        Command="{Binding RunFitCommand}"
+                        Command="{x:Bind viewModel.RunFitCommand}"
                         Margin="{ThemeResource AppBarButtonInnerBorderMargin}">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">

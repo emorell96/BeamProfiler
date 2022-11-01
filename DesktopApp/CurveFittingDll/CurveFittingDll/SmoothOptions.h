@@ -13,12 +13,12 @@ public:
 	}
 
 	int GetSigma() {
-		return sigma;
+		return kernelSigma;
 	}
 
-	NLOHMANN_DEFINE_TYPE_INTRUSIVE(SmoothOptions, smooth, kernelSize)
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(SmoothOptions, smooth, kernelSize, kernelSigma)
 private:
 	bool smooth = true;
 	int kernelSize = 81;
-	int sigma = 70;
+	int kernelSigma = 70;
 };
