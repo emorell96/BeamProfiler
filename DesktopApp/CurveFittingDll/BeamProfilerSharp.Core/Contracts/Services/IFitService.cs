@@ -3,5 +3,5 @@
 namespace BeamProfilerSharp.Core.Services;
 public interface IFitService
 {
-    Task RequestFitAsync(FitOptions fitOptions, CancellationToken cancellationToken = default);
+    Task<FitResults?> RequestFitAsync(FitOptions fitOptions, CancellationToken cancellationToken = default);
 }

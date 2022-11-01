@@ -3,12 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BeamProfilerSharp.Core.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BeamProfilerSharp.Models;
 
 internal class FitInformation : ObservableObject
 {
+
+    internal FitInformation()
+    {
+    }
+
+    internal FitInformation(FitParameters fitParameters)
+    {
+        x_0 = fitParameters.X0.Value;
+        y_0 = fitParameters.Y0.Value;
+        sigmaX = fitParameters.SigmaX.Value;
+        sigmaY = fitParameters.SigmaY.Value;
+        theta = fitParameters.Theta.Value;
+    }
+
     private double x_0 = 0;
     private double y_0 = 0;
     private double sigmaX = 50;

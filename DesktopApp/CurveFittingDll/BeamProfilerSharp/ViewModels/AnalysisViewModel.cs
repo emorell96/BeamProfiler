@@ -24,6 +24,8 @@ internal class AnalysisViewModel : MenuBarViewModel
     internal FitInformation FitInformation { get; set; } = new FitInformation();
     internal ImageInformation ImageInformation { get; set; } = new ImageInformation();
 
+    internal ObservableFitResults ObservableFitResults { get; set; } = new ObservableFitResults();
+
     internal ICommand RunFitCommand
     {
         get; set;
@@ -44,7 +46,7 @@ internal class AnalysisViewModel : MenuBarViewModel
         cancellationSource.CancelAfter(20000);
         try
         {
-            await fitService.RequestFitAsync(new Core.Models.FitOptions
+            var results = await fitService.RequestFitAsync(new Core.Models.FitOptions
             {
                 FitParameters = new Core.Models.FitParameters
                 {
@@ -84,6 +86,11 @@ internal class AnalysisViewModel : MenuBarViewModel
                 FilePath = ImageSource?.Replace(@"\", @"\\")
 
             });
+
+            if(results is not null)
+            {
+                ObservableFitResults.SetFitResults(results);
+            }
         }
         catch (TaskCanceledException) { }
         

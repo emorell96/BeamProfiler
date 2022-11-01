@@ -22,8 +22,8 @@ public:
 
 	void SetImage(cv::Mat image) {
 		this->image = image;
-		this->pixelsX = image.rows;
-		this->pixelsY = image.cols;
+		this->pixelsX = image.cols;
+		this->pixelsY = image.rows;
 	}
 
 	NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(ImageInformation, path, pixelsX, pixelsY)

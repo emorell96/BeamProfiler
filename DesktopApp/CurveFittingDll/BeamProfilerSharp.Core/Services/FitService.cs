@@ -18,7 +18,7 @@ public class FitService : IFitService
         this.httpClient = httpClient;
     }
 
-    public async Task RequestFitAsync(FitOptions fitOptions, CancellationToken cancellationToken = default)
+    public async Task<FitResults?> RequestFitAsync(FitOptions fitOptions, CancellationToken cancellationToken = default)
     {
         var request = new HttpRequestMessage(HttpMethod.Post, $"{baseUrl}/fit");
         //request.Content = JsonContent.Create(fitOptions, options: new System.Text.Json.JsonSerializerOptions
@@ -30,11 +30,12 @@ public class FitService : IFitService
             PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase
         }));
 
-        var response = await httpClient.SendAsync(request, cancellationToken);
+        var response = await httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
         if(response.IsSuccessStatusCode)
         {
-
+            return await response.Content.ReadFromJsonAsync<FitResults?>(cancellationToken: cancellationToken).ConfigureAwait(false);
         }
+        return null;
     }
 }

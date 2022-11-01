@@ -114,17 +114,17 @@
                     <StackPanel Grid.Column="0"
                                 Grid.Row="1"
                                 Margin="0,0,5,0">
-                        <CheckBox Content="Smooth Image"  IsChecked="{Binding ImageInformation.SmoothOptions.Smooth, Mode=TwoWay}" />
-                        <NumberBox Header="Smoothing Kernel Size" Value="{Binding ImageInformation.SmoothOptions.KernelSize, Mode=TwoWay}" />
-                        <NumberBox Header="Smoothing Kernel Sigma" Value="{Binding ImageInformation.SmoothOptions.KernelSigma, Mode=TwoWay}" />
+                        <CheckBox Content="Smooth Image"  IsChecked="{x:Bind viewModel.ImageInformation.SmoothOptions.Smooth, Mode=TwoWay}" />
+                        <NumberBox Header="Smoothing Kernel Size" Value="{x:Bind viewModel.ImageInformation.SmoothOptions.KernelSize, Mode=TwoWay}" />
+                        <NumberBox Header="Smoothing Kernel Sigma" Value="{x:Bind viewModel.ImageInformation.SmoothOptions.KernelSigma, Mode=TwoWay}" />
                     </StackPanel>
                     <StackPanel Grid.Column="1"
                                 Grid.Row="1"
                                 Margin="5,0,5,0">
                         <CheckBox Content="Resize Image (faster fits)" 
-                                  IsChecked="{Binding ImageInformation.ResizeOptions.Resize, Mode=TwoWay}" />
+                                  IsChecked="{x:Bind viewModel.ImageInformation.ResizeOptions.Resize, Mode=TwoWay}" />
                         <NumberBox Header="Resizing Factor (x0.25 default)"
-                                   Value="{Binding ImageInformation.ResizeOptions.ScaleFactor, Mode=TwoWay}"/>
+                                   Value="{x:Bind viewModel.ImageInformation.ResizeOptions.ScaleFactor, Mode=TwoWay}"/>
                     </StackPanel>
                 </Grid>
                 
@@ -147,11 +147,13 @@
 
             </StackPanel>
         </ContentPresenter>
+        
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
+            
             <ContentPresenter Grid.Column="0"
                           CornerRadius="8"
                           Margin="0,12,12,12"
@@ -163,7 +165,7 @@
                                Style="{ThemeResource SubtitleTextBlockStyle}" 
                                Margin="0,0,0,5"/>
                     <TextBlock Text="No image has been opened yet." Visibility="{Binding ImageSource, Converter={StaticResource StringVisibilityConverter}}" />
-
+                   
                     <Image Source="{Binding ImageSource}"  />
                 </StackPanel>
             </ContentPresenter>
@@ -182,6 +184,111 @@
                 </StackPanel>
             </ContentPresenter>
         </Grid>
+        <ContentPresenter Grid.Column="0"
+                          CornerRadius="8"
+                          Margin="0,12,12,12"
+                          Padding="16"
+                          Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0">
+                    <TextBlock Text="Final Fit Parameters"
+                       Style="{ThemeResource SubtitleTextBlockStyle}"
+                       Margin="0,0,0,5" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Margin="0,5,5,5">
+                            <TextBox Text="{x:Bind viewModel.ObservableFitResults.FitInformation.X_0, Mode=TwoWay}"
+                                     IsReadOnly="True">
+                                <TextBox.Header>
+                                    <TextBlock FontFamily="Noto Sans Math" Margin="0,0,0,-5">
+                            X<Run Typography.Variants="Subscript">0</Run> (in pixels)
+                                    </TextBlock>
+                                </TextBox.Header>
+                            </TextBox>
+                            <TextBox Text="{x:Bind viewModel.ObservableFitResults.FitInformation.Y_0, Mode=TwoWay}" 
+                                     Margin="0,5,0,0"
+                                     IsReadOnly="True">
+                                <TextBox.Header>
+                                    <TextBlock FontFamily="Noto Sans Math" Margin="0,0,0,-5">
+                                    Y&#x2080; (in pixels)
+                                    </TextBlock>
+                                </TextBox.Header>
+                            </TextBox>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Margin="0,5,5,5">
+                            <TextBox Text="{x:Bind viewModel.ObservableFitResults.FitInformation.SigmaX, Mode=TwoWay}"
+                                     IsReadOnly="True">
+                                <TextBox.Header>
+                                    <TextBlock FontFamily="Noto Sans Math" Margin="0,0,0,-5">
+                                    &#x03C3;&#x2093; (in pixels)
+                                    </TextBlock>
+                                </TextBox.Header>
+                            </TextBox>
+
+                            <TextBox Text="{x:Bind viewModel.ObservableFitResults.FitInformation.SigmaY, Mode=TwoWay}"
+                                     Margin="0,5,0,0"
+                                     IsReadOnly="True">
+                                <TextBox.Header>
+                                    <TextBlock FontFamily="Noto Sans Math" Margin="0,0,0,-5">
+                                    <Span FontFamily="Noto Sans Math">
+                                        &#x03C3;
+                                        <Run KeyTipVerticalOffset="-2" KeyTipHorizontalOffset="-2" FontSize="8" Typography.Variants="Subscript">y</Run>
+                                    </Span> (in pixels)
+                                    </TextBlock>
+                                </TextBox.Header>
+                            </TextBox>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Margin="0,5,0,5">
+                            <TextBox Text="{x:Bind viewModel.ObservableFitResults.FitInformation.Theta, Mode=TwoWay}"
+                                     IsReadOnly="True">
+                                <TextBox.Header>
+                                    <TextBlock FontFamily="Noto Sans Math" Margin="0,0,0,-5">
+                                    &#x03B8; (rads)
+                                    </TextBlock>
+                                </TextBox.Header>
+                            </TextBox>
+                            <TextBox Text="{x:Bind viewModel.ObservableFitResults.Ellipticity, Mode=TwoWay}"
+                                     Margin="0,5,0,0"
+                                     IsReadOnly="True">
+                                <TextBox.Header>
+                                    <TextBlock FontFamily="Noto Sans Math" Margin="0,0,0,-5">
+                                    &#x03B5; (Ellipticity - no unit)
+                                    </TextBlock>
+                                </TextBox.Header>
+                            </TextBox>
+                        </StackPanel>
+                    </Grid>
+                    
+                </StackPanel>
+                <StackPanel Grid.Row="1">
+                    <TextBlock Text="Image Size used for fit"
+                       Style="{ThemeResource SubtitleTextBlockStyle}"
+                       Margin="0,0,0,5" />
+                    <StackPanel Grid.Column="0" Margin="0,5,5,5">
+                        <TextBox Text="{x:Bind viewModel.ObservableFitResults.ImageSizeX, Mode=TwoWay}"
+                                 Header="Horizontal Size (pixels)"
+                                 IsReadOnly="True" />
+
+
+                        <TextBox Text="{x:Bind viewModel.ObservableFitResults.ImageSizeY, Mode=TwoWay}" 
+                                 Header="Vertical Size (pixels)"
+                                 Margin="0,5,0,0"
+                                 IsReadOnly="True"/>
+                    </StackPanel>
+                </StackPanel>
+
+
+
+            </Grid>
+        </ContentPresenter>
 
     </StackPanel>
 </Page>

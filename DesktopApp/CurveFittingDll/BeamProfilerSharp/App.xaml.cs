@@ -71,7 +71,7 @@ public partial class App : Application
                 return new HttpClientHandler
                 {
                     AutomaticDecompression = System.Net.DecompressionMethods.All,
-                    Proxy = new WebProxy("http://localhost:5555", false)
+                    //Proxy = new WebProxy("http://localhost:5555", false)
                 };
             });
             
