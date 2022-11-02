@@ -12,7 +12,12 @@ public class FitResults
         get; set;
     }
 
-    public ImageInformation? ImageInformation
+    public ImageInformation? ProcessedImage
+    {
+        get; set;
+    }
+
+    public ImageInformation? FittedImage
     {
         get; set;
     }

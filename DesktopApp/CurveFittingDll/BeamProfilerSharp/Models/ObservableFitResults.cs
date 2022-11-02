@@ -13,7 +13,8 @@ internal class ObservableFitResults : ObservableObject
     internal ObservableFitResults(FitResults fitResults)
     {
         ArgumentNullException.ThrowIfNull(fitResults.FinalParameters);
-        ArgumentNullException.ThrowIfNull(fitResults.ImageInformation);
+        ArgumentNullException.ThrowIfNull(fitResults.FittedImage);
+        //ArgumentNullException.ThrowIfNull(fitResults.ProcessedImage);
 
         SetFitResults(fitResults);
 
@@ -28,11 +29,15 @@ internal class ObservableFitResults : ObservableObject
     public void SetFitResults(FitResults fitResults)
     {
         ArgumentNullException.ThrowIfNull(fitResults.FinalParameters);
-        ArgumentNullException.ThrowIfNull(fitResults.ImageInformation);
+        ArgumentNullException.ThrowIfNull(fitResults.FittedImage);
 
         FitInformation = new FitInformation(fitResults.FinalParameters);
-        ImageSizeX = fitResults.ImageInformation.PixelsX;
-        ImageSizeY = fitResults.ImageInformation.PixelsY;
+        ImageSizeX = fitResults.FittedImage.PixelsX;
+        ImageSizeY = fitResults.FittedImage.PixelsY;
+
+        FittedImagePath = fitResults.FittedImage.Path?.Replace(@"\\", @"\") ?? "none";
+        ProcessedImagePath = fitResults.ProcessedImage?.Path?.Replace(@"\\", @"\") ?? "none";
+
         IsSet = true;
         Ellipticity = Math.Min(FitInformation.SigmaY, FitInformation.SigmaX) / Math.Max(FitInformation.SigmaY, FitInformation.SigmaX);
     }
@@ -42,6 +47,8 @@ internal class ObservableFitResults : ObservableObject
     private int imageSizeY;
     private bool isSet;
     private double ellipticity;
+    private string fittedImagePath = "none";
+    private string processedImagePath = "none";
 
     public FitInformation? FitInformation
     {
@@ -59,6 +66,18 @@ internal class ObservableFitResults : ObservableObject
     {
         get => imageSizeY;
         set => SetProperty(ref imageSizeY, value);
+    }
+
+    public string FittedImagePath
+    {
+        get => fittedImagePath;
+        set => SetProperty(ref fittedImagePath, value);
+    }
+
+    public string ProcessedImagePath
+    {
+        get => processedImagePath;
+        set => SetProperty(ref processedImagePath, value);
     }
 
     public bool IsSet

@@ -8,10 +8,12 @@ class FitResults
 {
 public:
 	FitParameters finalParameters;
-	ImageInformation imageInformation;
+	//ImageInformation imageInformation;
+	ImageInformation fittedImage;
+	ImageInformation processedImage;
 
 	FitResults() {};
 
-	NLOHMANN_DEFINE_TYPE_INTRUSIVE(FitResults, finalParameters, imageInformation)
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(FitResults, finalParameters, fittedImage, processedImage)
 };
 

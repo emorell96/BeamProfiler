@@ -152,6 +152,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             
             <ContentPresenter Grid.Column="0"
@@ -175,12 +176,27 @@
                           Padding="16"
                           Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
                 <StackPanel>
+                    <TextBlock Text="Processed Image" 
+                               Style="{ThemeResource SubtitleTextBlockStyle}"
+                               Margin="0,0,0,5"/>
+                    <TextBlock Text="No fit has been done yet." Visibility="{x:Bind viewModel.ObservableFitResults.ProcessedImagePath, Mode=OneWay, Converter={StaticResource StringVisibilityConverter}}" />
+
+                    <Image Source="{x:Bind viewModel.ObservableFitResults.ProcessedImagePath, Mode=OneWay}" />
+                </StackPanel>
+            </ContentPresenter>
+            <ContentPresenter CornerRadius="8"
+                              Grid.Column="2"
+                          Margin="0,12,12,12"
+                          Padding="16"
+                              DataContext="{x:Bind viewModel}"
+                          Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+                <StackPanel>
                     <TextBlock Text="Fit result" 
                                Style="{ThemeResource SubtitleTextBlockStyle}"
                                Margin="0,0,0,5"/>
-                    <TextBlock Text="No fit has been done yet." Visibility="{Binding FitImageSource, Converter={StaticResource StringVisibilityConverter}}" />
+                    <TextBlock Text="No fit has been done yet." Visibility="{x:Bind viewModel.ObservableFitResults.FittedImagePath, Mode=OneWay, Converter={StaticResource StringVisibilityConverter}}" />
 
-                    <Image Source="{Binding FitImageSource}" />
+                    <Image Source="{x:Bind viewModel.ObservableFitResults.FittedImagePath, Mode=OneWay}" />
                 </StackPanel>
             </ContentPresenter>
         </Grid>

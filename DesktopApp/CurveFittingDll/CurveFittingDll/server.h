@@ -19,8 +19,21 @@
 
 #include "FitOptions.h"
 #include "FitResults.h"
+#include "Gaussian2DProfileEigen.h"
+#include <filesystem>
 
 //using json;
+
+ImageInformation SaveImage(cv::Mat image, std::string originalPath, std::string suffix) {
+	auto filePath = std::filesystem::path(originalPath);
+	auto name = filePath.stem().string().append(suffix);
+	auto extension = filePath.extension().string();
+
+	filePath = filePath.replace_filename(name + extension);
+	cv::imwrite(filePath.string(), image);
+
+	return ImageInformation(filePath.string(), image.cols, image.rows, image);
+}
 
 FitResults Fit(std::string filepath, SmoothInfo smoothInfo, ResizeInfo resizeInfo, FitParameters fitParameters)
 {
@@ -28,18 +41,47 @@ FitResults Fit(std::string filepath, SmoothInfo smoothInfo, ResizeInfo resizeInf
 
 	imageHandler.Process(filepath, smoothInfo, resizeInfo);
 
+	FitResults fitResults;
+
+	auto processed = ImageInformation(imageHandler.GetImageInformation());
+
+
+	fitResults.processedImage = SaveImage(processed.GetImage(), filepath, "_processed");
+
 	BeamProfiler profiler(imageHandler, fitParameters);
 
 	profiler.Fit();
 
-	FitResults fitResults;
-
-	fitResults.imageInformation = imageHandler.GetImageInformation();
+	
+	
 
 	fitResults.finalParameters =  profiler.GetParameters();
 
+	cv::Mat img = imageHandler.GetImage();
+
+	Gaussian2DProfileEigen profile(1.0, fitResults.finalParameters.x0.value, fitResults.finalParameters.y0.value, fitResults.finalParameters.sigmaX.value, fitResults.finalParameters.sigmaY.value, fitResults.finalParameters.theta.value, 0);
+
+	Eigen::MatrixXd values = profile.Calculate(img.cols, img.rows);
+
+	cv::Mat calculatedImage;
+
+	double maxValue = values.maxCoeff();
+
+	values = (values / maxValue) * 255;
+
+
+	cv::eigen2cv(values, calculatedImage);
+
+	fitResults.fittedImage = SaveImage(calculatedImage, filepath, "_fitted");
+	
+
+
+
+
 	return fitResults;
 }
+
+
 
 class HttpParser {
 public:

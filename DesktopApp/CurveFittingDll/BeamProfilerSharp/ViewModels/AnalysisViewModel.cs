@@ -24,14 +24,18 @@ internal class AnalysisViewModel : MenuBarViewModel
     internal FitInformation FitInformation { get; set; } = new FitInformation();
     internal ImageInformation ImageInformation { get; set; } = new ImageInformation();
 
-    internal ObservableFitResults ObservableFitResults { get; set; } = new ObservableFitResults();
-
+    internal ObservableFitResults ObservableFitResults
+    {
+        get => observableFitResults; 
+        set => SetProperty(ref observableFitResults, value);
+    }
     internal ICommand RunFitCommand
     {
         get; set;
     }
 
     private string? _fitImageSource;
+    private ObservableFitResults observableFitResults = new ObservableFitResults();
 
     public string? FitImageSource
     {
@@ -87,12 +91,12 @@ internal class AnalysisViewModel : MenuBarViewModel
 
             });
 
-            if(results is not null)
+            if (results is not null)
             {
                 ObservableFitResults.SetFitResults(results);
             }
         }
         catch (TaskCanceledException) { }
-        
+
     }
 }

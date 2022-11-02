@@ -20,6 +20,10 @@ public:
 		return image;
 	}
 
+	std::string GetPath() {
+		return path;
+	}
+
 	void SetImage(cv::Mat image) {
 		this->image = image;
 		this->pixelsX = image.cols;
